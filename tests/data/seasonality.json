@@ -1,0 +1,280 @@
+{
+  "seasonality_templates": {
+    "electronics": {
+      "name": "Электроника",
+      "description": "Сезонность для электронных товаров с пиками в новогодние праздники",
+      "coefficients": {
+        "january": 1.3,
+        "february": 0.8,
+        "march": 0.9,
+        "april": 0.9,
+        "may": 1.0,
+        "june": 1.0,
+        "july": 0.9,
+        "august": 0.9,
+        "september": 1.1,
+        "october": 1.1,
+        "november": 1.4,
+        "december": 1.8
+      },
+      "peak_periods": [
+        {
+          "name": "Новогодние праздники",
+          "start": "11-15",
+          "end": "01-15",
+          "multiplier": 1.6
+        },
+        {
+          "name": "Черная пятница",
+          "start": "11-20",
+          "end": "11-30",
+          "multiplier": 1.8
+        }
+      ]
+    },
+    "clothing": {
+      "name": "Одежда",
+      "description": "Сезонность для одежды с учетом смены сезонов",
+      "coefficients": {
+        "january": 0.7,
+        "february": 0.8,
+        "march": 1.2,
+        "april": 1.3,
+        "may": 1.1,
+        "june": 1.0,
+        "july": 0.9,
+        "august": 1.2,
+        "september": 1.4,
+        "october": 1.3,
+        "november": 1.1,
+        "december": 1.2
+      },
+      "peak_periods": [
+        {
+          "name": "Весенняя коллекция",
+          "start": "03-01",
+          "end": "05-31",
+          "multiplier": 1.3
+        },
+        {
+          "name": "Осенняя коллекция",
+          "start": "08-15",
+          "end": "10-31",
+          "multiplier": 1.4
+        }
+      ]
+    },
+    "sports": {
+      "name": "Спорттовары",
+      "description": "Сезонность для спортивных товаров с летним и зимним пиками",
+      "coefficients": {
+        "january": 1.2,
+        "february": 1.3,
+        "march": 1.1,
+        "april": 1.2,
+        "may": 1.4,
+        "june": 1.5,
+        "july": 1.6,
+        "august": 1.4,
+        "september": 1.1,
+        "october": 0.9,
+        "november": 0.8,
+        "december": 1.1
+      },
+      "peak_periods": [
+        {
+          "name": "Летний сезон",
+          "start": "05-01",
+          "end": "08-31",
+          "multiplier": 1.5
+        },
+        {
+          "name": "Зимний спорт",
+          "start": "12-01",
+          "end": "02-28",
+          "multiplier": 1.3
+        }
+      ]
+    },
+    "appliances": {
+      "name": "Бытовая техника",
+      "description": "Сезонность для бытовой техники с пиками в праздники",
+      "coefficients": {
+        "january": 1.1,
+        "february": 0.9,
+        "march": 1.0,
+        "april": 1.0,
+        "may": 1.1,
+        "june": 1.0,
+        "july": 0.9,
+        "august": 0.9,
+        "september": 1.0,
+        "october": 1.1,
+        "november": 1.3,
+        "december": 1.4
+      },
+      "peak_periods": [
+        {
+          "name": "Новоселье весной",
+          "start": "04-01",
+          "end": "06-30",
+          "multiplier": 1.2
+        },
+        {
+          "name": "Предновогодние покупки",
+          "start": "11-01",
+          "end": "12-31",
+          "multiplier": 1.4
+        }
+      ]
+    },
+    "custom_winter": {
+      "name": "Зимние товары",
+      "description": "Кастомный шаблон для зимних товаров",
+      "coefficients": {
+        "january": 1.8,
+        "february": 1.6,
+        "march": 1.2,
+        "april": 0.6,
+        "may": 0.3,
+        "june": 0.2,
+        "july": 0.2,
+        "august": 0.3,
+        "september": 0.6,
+        "october": 1.2,
+        "november": 1.6,
+        "december": 1.8
+      },
+      "peak_periods": [
+        {
+          "name": "Зимний сезон",
+          "start": "11-01",
+          "end": "03-31",
+          "multiplier": 1.7
+        }
+      ]
+    },
+    "custom_summer": {
+      "name": "Летние товары",
+      "description": "Кастомный шаблон для летних товаров",
+      "coefficients": {
+        "january": 0.2,
+        "february": 0.3,
+        "march": 0.6,
+        "april": 1.2,
+        "may": 1.6,
+        "june": 1.8,
+        "july": 1.8,
+        "august": 1.6,
+        "september": 1.2,
+        "october": 0.6,
+        "november": 0.3,
+        "december": 0.2
+      },
+      "peak_periods": [
+        {
+          "name": "Летний сезон",
+          "start": "05-01",
+          "end": "09-30",
+          "multiplier": 1.7
+        }
+      ]
+    },
+    "no_seasonality": {
+      "name": "Без сезонности",
+      "description": "Шаблон для товаров без сезонных колебаний",
+      "coefficients": {
+        "january": 1.0,
+        "february": 1.0,
+        "march": 1.0,
+        "april": 1.0,
+        "may": 1.0,
+        "june": 1.0,
+        "july": 1.0,
+        "august": 1.0,
+        "september": 1.0,
+        "october": 1.0,
+        "november": 1.0,
+        "december": 1.0
+      },
+      "peak_periods": []
+    }
+  },
+  "special_events": [
+    {
+      "name": "Новый год",
+      "date": "01-01",
+      "duration_days": 10,
+      "categories": ["electronics", "appliances"],
+      "multiplier": 2.0
+    },
+    {
+      "name": "8 марта",
+      "date": "03-08",
+      "duration_days": 7,
+      "categories": ["electronics", "clothing"],
+      "multiplier": 1.5
+    },
+    {
+      "name": "23 февраля",
+      "date": "02-23",
+      "duration_days": 5,
+      "categories": ["electronics", "sports"],
+      "multiplier": 1.3
+    },
+    {
+      "name": "День знаний",
+      "date": "09-01",
+      "duration_days": 14,
+      "categories": ["electronics", "clothing"],
+      "multiplier": 1.4
+    },
+    {
+      "name": "Черная пятница",
+      "date": "11-24",
+      "duration_days": 4,
+      "categories": ["electronics", "appliances", "clothing"],
+      "multiplier": 2.2
+    },
+    {
+      "name": "Киберпонедельник",
+      "date": "11-27",
+      "duration_days": 1,
+      "categories": ["electronics"],
+      "multiplier": 1.8
+    }
+  ],
+  "weather_adjustments": {
+    "temperature_based": {
+      "very_cold": {
+        "threshold": -15,
+        "categories": {
+          "clothing": 1.3,
+          "appliances": 1.1
+        }
+      },
+      "cold": {
+        "threshold": 0,
+        "categories": {
+          "clothing": 1.1,
+          "sports": 0.9
+        }
+      },
+      "warm": {
+        "threshold": 20,
+        "categories": {
+          "clothing": 0.9,
+          "sports": 1.2
+        }
+      },
+      "hot": {
+        "threshold": 30,
+        "categories": {
+          "clothing": 0.8,
+          "sports": 1.4,
+          "appliances": 1.2
+        }
+      }
+    }
+  }
+} 

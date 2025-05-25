@@ -1,0 +1,91 @@
+# Многоэтапная сборка для React приложения
+FROM node:18-alpine as builder
+
+# Метаданные образа
+LABEL maintainer="inventory-system@company.com"
+LABEL version="1.0.0"
+LABEL description="Inventory Management System Frontend"
+
+# Установка рабочей директории
+WORKDIR /app
+
+# Копирование package.json и package-lock.json
+COPY package*.json ./
+
+# Установка зависимостей
+RUN npm ci --only=production --silent
+
+# Копирование исходного кода
+COPY . .
+
+# Аргументы сборки
+ARG REACT_APP_API_URL=http://localhost:8000
+ARG REACT_APP_VERSION=1.0.0
+
+# Установка переменных окружения для сборки
+ENV REACT_APP_API_URL=$REACT_APP_API_URL
+ENV REACT_APP_VERSION=$REACT_APP_VERSION
+ENV NODE_ENV=production
+
+# Сборка приложения
+RUN npm run build
+
+# Production образ с Nginx
+FROM nginx:1.25-alpine
+
+# Установка дополнительных пакетов
+RUN apk add --no-cache \
+    curl \
+    openssl \
+    && rm -rf /var/cache/apk/*
+
+# Создание пользователя nginx
+RUN addgroup -g 101 -S nginx && \
+    adduser -S -D -H -u 101 -h /var/cache/nginx -s /sbin/nologin -G nginx -g nginx nginx
+
+# Копирование собранного приложения
+COPY --from=builder /app/build /usr/share/nginx/html
+
+# Копирование конфигурации Nginx
+COPY nginx.conf /etc/nginx/nginx.conf
+
+# Создание директорий для логов и SSL
+RUN mkdir -p /var/log/nginx /etc/nginx/ssl && \
+    chown -R nginx:nginx /var/log/nginx /etc/nginx/ssl /usr/share/nginx/html
+
+# Создание health check endpoint
+RUN echo '<!DOCTYPE html><html><head><title>Health Check</title></head><body><h1>OK</h1></body></html>' > /usr/share/nginx/html/health
+
+# Создание скрипта запуска
+RUN echo '#!/bin/sh' > /docker-entrypoint.sh && \
+    echo 'set -e' >> /docker-entrypoint.sh && \
+    echo '' >> /docker-entrypoint.sh && \
+    echo '# Генерация самоподписанного сертификата если SSL сертификаты не найдены' >> /docker-entrypoint.sh && \
+    echo 'if [ ! -f /etc/nginx/ssl/cert.pem ] || [ ! -f /etc/nginx/ssl/key.pem ]; then' >> /docker-entrypoint.sh && \
+    echo '    echo "Генерация самоподписанного SSL сертификата..."' >> /docker-entrypoint.sh && \
+    echo '    openssl req -x509 -nodes -days 365 -newkey rsa:2048 \' >> /docker-entrypoint.sh && \
+    echo '        -keyout /etc/nginx/ssl/key.pem \' >> /docker-entrypoint.sh && \
+    echo '        -out /etc/nginx/ssl/cert.pem \' >> /docker-entrypoint.sh && \
+    echo '        -subj "/C=RU/ST=Moscow/L=Moscow/O=Company/CN=localhost"' >> /docker-entrypoint.sh && \
+    echo 'fi' >> /docker-entrypoint.sh && \
+    echo '' >> /docker-entrypoint.sh && \
+    echo '# Проверка конфигурации Nginx' >> /docker-entrypoint.sh && \
+    echo 'nginx -t' >> /docker-entrypoint.sh && \
+    echo '' >> /docker-entrypoint.sh && \
+    echo '# Запуск Nginx' >> /docker-entrypoint.sh && \
+    echo 'exec nginx -g "daemon off;"' >> /docker-entrypoint.sh
+
+RUN chmod +x /docker-entrypoint.sh
+
+# Проверка здоровья
+HEALTHCHECK --interval=30s --timeout=10s --start-period=30s --retries=3 \
+    CMD curl -f http://localhost:80/health || exit 1
+
+# Экспорт портов
+EXPOSE 80 443
+
+# Переключение на пользователя nginx
+USER nginx
+
+# Команда запуска
+ENTRYPOINT ["/docker-entrypoint.sh"] 

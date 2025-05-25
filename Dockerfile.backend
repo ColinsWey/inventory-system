@@ -1,0 +1,68 @@
+# Многоэтапная сборка для оптимизации размера образа
+FROM python:3.11-slim as builder
+
+# Установка системных зависимостей для сборки
+RUN apt-get update && apt-get install -y \
+    build-essential \
+    libpq-dev \
+    gcc \
+    && rm -rf /var/lib/apt/lists/*
+
+# Создание виртуального окружения
+RUN python -m venv /opt/venv
+ENV PATH="/opt/venv/bin:$PATH"
+
+# Копирование и установка зависимостей
+COPY requirements.txt .
+RUN pip install --no-cache-dir --upgrade pip && \
+    pip install --no-cache-dir -r requirements.txt
+
+# Production образ
+FROM python:3.11-slim
+
+# Метаданные образа
+LABEL maintainer="inventory-system@company.com"
+LABEL version="1.0.0"
+LABEL description="Inventory Management System Backend API"
+
+# Установка runtime зависимостей
+RUN apt-get update && apt-get install -y \
+    libpq5 \
+    curl \
+    && rm -rf /var/lib/apt/lists/* \
+    && apt-get clean
+
+# Создание пользователя для безопасности
+RUN groupadd -r appuser && useradd -r -g appuser appuser
+
+# Копирование виртуального окружения из builder
+COPY --from=builder /opt/venv /opt/venv
+ENV PATH="/opt/venv/bin:$PATH"
+
+# Установка рабочей директории
+WORKDIR /app
+
+# Копирование кода приложения
+COPY . .
+
+# Создание необходимых директорий
+RUN mkdir -p /app/logs /app/uploads /app/temp && \
+    chown -R appuser:appuser /app
+
+# Установка переменных окружения
+ENV PYTHONPATH=/app
+ENV PYTHONUNBUFFERED=1
+ENV PYTHONDONTWRITEBYTECODE=1
+
+# Переключение на непривилегированного пользователя
+USER appuser
+
+# Проверка здоровья приложения
+HEALTHCHECK --interval=30s --timeout=10s --start-period=60s --retries=3 \
+    CMD curl -f http://localhost:8000/health || exit 1
+
+# Экспорт порта
+EXPOSE 8000
+
+# Команда запуска
+CMD ["gunicorn", "--bind", "0.0.0.0:8000", "--workers", "4", "--worker-class", "uvicorn.workers.UvicornWorker", "--access-logfile", "/app/logs/access.log", "--error-logfile", "/app/logs/error.log", "--log-level", "info", "app.main:app"] 
