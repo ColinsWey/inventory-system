@@ -9,12 +9,12 @@ from typing import List, Optional, Dict, Any
 import httpx
 from loguru import logger
 
-from backend.app.core.config import settings
-from backend.app.features.integration.schemas import (
+from app.core.config import settings
+from app.features.integration.schemas import (
     SyncStatus, SyncResult, IntegrationConfig, SalesDriveItem,
     SyncHistoryEntry, ConnectionTestResult, SyncStatusEnum
 )
-from backend.app.shared.exceptions import ExternalServiceError
+from app.shared.exceptions import ExternalServiceError
 
 
 class IntegrationService:

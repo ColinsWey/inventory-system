@@ -8,19 +8,19 @@ from uuid import UUID
 from fastapi import APIRouter, Depends, HTTPException, status, Query
 from sqlalchemy.orm import Session
 
-from backend.app.core.database.connection import get_db
-from backend.app.api.v1.services.product_service import ProductService
-from backend.app.api.v1.schemas.product import (
+from app.core.database.connection import get_db
+from app.api.v1.services.product_service import ProductService
+from app.api.v1.schemas.product import (
     Product, ProductCreate, ProductUpdate, ProductListItem, 
     ProductFilters, ProductBulkUpdate
 )
-from backend.app.api.v1.schemas.common import (
+from app.api.v1.schemas.common import (
     PaginationParams, PaginatedResponse, SuccessResponse
 )
-from backend.app.api.v1.dependencies import (
+from app.api.v1.dependencies import (
     get_current_active_user, require_operator, require_manager
 )
-from backend.app.database.models import User as UserModel
+from app.database.models import User as UserModel
 
 logger = logging.getLogger(__name__)
 

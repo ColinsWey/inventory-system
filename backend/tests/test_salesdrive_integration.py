@@ -8,12 +8,12 @@ from unittest.mock import AsyncMock, patch, MagicMock
 from datetime import datetime, timedelta
 from decimal import Decimal
 
-from backend.app.api.v1.services.salesdrive_service import (
+from app.api.v1.services.salesdrive_service import (
     SalesDriveClient, SalesDriveService, SalesDriveAPIError,
     SalesDriveRateLimitError, SalesDriveAuthError
 )
-from backend.app.api.v1.schemas.salesdrive import SalesDriveApiConfig
-from backend.app.api.v1.schemas.import_data import ImportResult
+from app.api.v1.schemas.salesdrive import SalesDriveApiConfig
+from app.api.v1.schemas.import_data import ImportResult
 
 
 class TestSalesDriveClient:
@@ -241,7 +241,7 @@ class TestSalesDriveService:
     async def test_sync_products_success(self, service, mock_db):
         """Тест успешной синхронизации товаров."""
         from uuid import uuid4
-        from backend.app.api.v1.schemas.salesdrive import SalesDriveProduct
+        from app.api.v1.schemas.salesdrive import SalesDriveProduct
         
         user_id = uuid4()
         
@@ -284,7 +284,7 @@ class TestSalesDriveService:
     async def test_sync_products_with_existing(self, service, mock_db):
         """Тест синхронизации с существующими товарами."""
         from uuid import uuid4
-        from backend.app.api.v1.schemas.salesdrive import SalesDriveProduct
+        from app.api.v1.schemas.salesdrive import SalesDriveProduct
         
         user_id = uuid4()
         
@@ -370,7 +370,7 @@ class TestSalesDriveService:
     
     def test_find_or_create_category(self, service, mock_db):
         """Тест поиска или создания категории."""
-        from backend.app.database.models import CategoryModel
+        from app.database.models import CategoryModel
         
         category_name = "Test Category"
         

@@ -5,10 +5,10 @@
 import logging
 from sqlalchemy.orm import Session
 
-from backend.app.core.database.connection import engine
-from backend.app.database.models import Base, User, Category, ProductTag, Supplier
-from backend.app.database import UserRole
-from backend.app.api.v1.services.auth_service import AuthService
+from app.core.database.connection import engine
+from app.database.models import Base, User, Category, ProductTag, Supplier
+from app.database import UserRole
+from app.api.v1.services.auth_service import AuthService
 
 logger = logging.getLogger(__name__)
 
@@ -128,7 +128,7 @@ def init_database():
     create_tables()
     
     # Создаем начальные данные
-    from backend.app.core.database.connection import SessionLocal
+    from app.core.database.connection import SessionLocal
     db = SessionLocal()
     try:
         create_initial_data(db)

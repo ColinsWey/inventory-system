@@ -6,7 +6,7 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, Session
 from typing import Generator
 
-from backend.app.core.config import settings
+from app.core.config import settings
 
 # Создание движка базы данных
 engine = create_engine(

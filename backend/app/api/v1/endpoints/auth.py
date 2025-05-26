@@ -6,17 +6,17 @@ import logging
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
 
-from backend.app.core.database.connection import get_db
-from backend.app.api.v1.services.auth_service import AuthService
-from backend.app.api.v1.schemas.auth import (
+from app.core.database.connection import get_db
+from app.api.v1.services.auth_service import AuthService
+from app.api.v1.schemas.auth import (
     LoginRequest, TokenResponse, UserInfo, UserCreate, 
     UserUpdate, PasswordChange, User
 )
-from backend.app.api.v1.schemas.common import SuccessResponse
-from backend.app.api.v1.dependencies import (
+from app.api.v1.schemas.common import SuccessResponse
+from app.api.v1.dependencies import (
     get_current_active_user, require_admin, get_auth_service
 )
-from backend.app.database.models import User as UserModel
+from app.database.models import User as UserModel
 
 logger = logging.getLogger(__name__)
 

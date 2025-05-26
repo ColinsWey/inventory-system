@@ -9,7 +9,7 @@ from sqlalchemy.orm import Session, joinedload
 from sqlalchemy import and_, or_, func, desc, asc
 from fastapi import HTTPException, status
 
-from backend.app.database.models import (
+from app.database.models import (
     Product as ProductModel, 
     Category as CategoryModel,
     Supplier as SupplierModel,
@@ -18,11 +18,11 @@ from backend.app.database.models import (
     Inventory as InventoryModel,
     UserLog as UserLogModel
 )
-from backend.app.api.v1.schemas.product import (
+from app.api.v1.schemas.product import (
     ProductCreate, ProductUpdate, ProductFilters, Product, 
     ProductListItem, ProductBulkUpdate
 )
-from backend.app.api.v1.schemas.common import PaginationParams
+from app.api.v1.schemas.common import PaginationParams
 
 logger = logging.getLogger(__name__)
 

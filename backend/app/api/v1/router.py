@@ -4,10 +4,10 @@
 
 from fastapi import APIRouter
 
-from backend.app.api.v1.endpoints import auth, products, categories, salesdrive, sales, forecasts
-from backend.app.features.analytics.router import router as analytics_router
-from backend.app.features.inventory.router import router as inventory_router
-from backend.app.features.integration.router import router as integration_router
+from app.api.v1.endpoints import auth, products, categories, salesdrive, sales, forecasts
+from app.features.analytics.router import router as analytics_router
+from app.features.inventory.router import router as inventory_router
+from app.features.integration.router import router as integration_router
 
 # Создаем главный роутер
 api_router = APIRouter()

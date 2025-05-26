@@ -12,7 +12,7 @@ from sqlalchemy.orm import Session
 from sqlalchemy import func, and_, desc
 from fastapi import HTTPException, status
 
-from backend.app.database.models import (
+from app.database.models import (
     Product as ProductModel,
     Sale as SaleModel,
     SalesForecast as SalesForecastModel,
@@ -20,7 +20,7 @@ from backend.app.database.models import (
     Inventory as InventoryModel,
     UserLog as UserLogModel
 )
-from backend.app.api.v1.schemas.forecast import (
+from app.api.v1.schemas.forecast import (
     SalesForecastCreate, SalesForecastUpdate, SalesForecast,
     ForecastTemplate, ForecastTemplateCreate, ForecastCalculationResult,
     ProductForecastSummary, ForecastAccuracy, ForecastAnalytics,

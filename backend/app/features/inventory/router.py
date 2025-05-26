@@ -5,11 +5,11 @@
 from typing import List, Optional
 from fastapi import APIRouter, Query, Depends
 
-from backend.app.features.inventory.schemas import (
+from app.features.inventory.schemas import (
     InventoryItem, InventoryItemCreate, InventoryItemUpdate,
     InventoryResponse, InventoryFilter
 )
-from backend.app.features.inventory.service import InventoryService
+from app.features.inventory.service import InventoryService
 
 router = APIRouter()
 

@@ -7,11 +7,11 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.middleware.trustedhost import TrustedHostMiddleware
 
-from backend.app.core.config import settings
-from backend.app.api.v1.router import api_router
-from backend.app.core.database.init_db import init_database
-# from backend.app.api.middleware.logging import LoggingMiddleware
-# from backend.app.api.middleware.error_handler import ErrorHandlerMiddleware
+from app.core.config import settings
+from app.api.v1.router import api_router
+from app.core.database.init_db import init_database
+# from app.api.middleware.logging import LoggingMiddleware
+# from app.api.middleware.error_handler import ErrorHandlerMiddleware
 
 # Настройка логирования
 logging.basicConfig(

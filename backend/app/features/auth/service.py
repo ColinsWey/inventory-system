@@ -8,9 +8,9 @@ from typing import Optional
 from jose import JWTError, jwt
 from passlib.context import CryptContext
 
-from backend.app.core.config import settings
-from backend.app.features.auth.schemas import Token, UserCreate, UserResponse, UserInDB
-from backend.app.shared.exceptions import AuthenticationError
+from app.core.config import settings
+from app.features.auth.schemas import Token, UserCreate, UserResponse, UserInDB
+from app.shared.exceptions import AuthenticationError
 
 
 class AuthService:

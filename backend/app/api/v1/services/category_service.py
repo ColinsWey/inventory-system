@@ -9,8 +9,8 @@ from sqlalchemy.orm import Session, joinedload
 from sqlalchemy import func
 from fastapi import HTTPException, status
 
-from backend.app.database.models import Category as CategoryModel, Product as ProductModel
-from backend.app.api.v1.schemas.category import CategoryCreate, CategoryUpdate, Category, CategoryTree
+from app.database.models import Category as CategoryModel, Product as ProductModel
+from app.api.v1.schemas.category import CategoryCreate, CategoryUpdate, Category, CategoryTree
 
 logger = logging.getLogger(__name__)
 

@@ -13,18 +13,18 @@ from io import StringIO, BytesIO
 from sqlalchemy.orm import Session
 from fastapi import HTTPException, status, UploadFile
 
-from backend.app.database.models import (
+from app.database.models import (
     Product as ProductModel,
     Category as CategoryModel,
     Supplier as SupplierModel,
     UserLog as UserLogModel
 )
-from backend.app.api.v1.schemas.import_data import (
+from app.api.v1.schemas.import_data import (
     ImportResult, ImportStatus, ImportSource, ImportMapping,
     ProductImportData, CategoryImportData, SupplierImportData
 )
-from backend.app.api.v1.services.product_service import ProductService
-from backend.app.api.v1.services.category_service import CategoryService
+from app.api.v1.services.product_service import ProductService
+from app.api.v1.services.category_service import CategoryService
 
 logger = logging.getLogger(__name__)
 
@@ -150,7 +150,7 @@ class ImportService:
         
         category = self.category_service.get_category_by_name(category_name)
         if not category:
-            from backend.app.api.v1.schemas.category import CategoryCreate
+            from app.api.v1.schemas.category import CategoryCreate
             category_data = CategoryCreate(
                 name=category_name,
                 description=f"Автоматически создана при импорте"
@@ -272,7 +272,7 @@ class ImportService:
                         result.updated_items += 1
                     else:
                         # Создаем новый товар
-                        from backend.app.api.v1.schemas.product import ProductCreate
+                        from app.api.v1.schemas.product import ProductCreate
                         product_data = ProductCreate(
                             name=item_data['name'],
                             sku=item_data['sku'],
