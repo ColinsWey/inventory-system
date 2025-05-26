@@ -48,10 +48,10 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Middleware для безопасности
+# Middleware для безопасности (разрешить все хосты для разработки)
 app.add_middleware(
     TrustedHostMiddleware,
-    allowed_hosts=["localhost", "127.0.0.1", "0.0.0.0"]
+    allowed_hosts=["*"]
 )
 
 # Кастомные middleware (добавим позже)
