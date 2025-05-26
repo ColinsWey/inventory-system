@@ -61,19 +61,16 @@ services:
       retries: 3
     restart: unless-stopped
 
-  # Frontend React (опционально)
+  # Frontend React с Nginx
   frontend:
     build:
       context: ./frontend
       dockerfile: Dockerfile
     container_name: inventory_frontend
     ports:
-      - "3000:3000"
+      - "3000:80"
     environment:
-      - REACT_APP_API_URL=http://localhost:8000
-    volumes:
-      - ./frontend:/app
-      - /app/node_modules
+      - REACT_APP_API_URL=http://localhost:8000/api/v1
     depends_on:
       - backend
     restart: unless-stopped
