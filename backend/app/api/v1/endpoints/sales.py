@@ -9,10 +9,10 @@ from datetime import datetime, date
 from fastapi import APIRouter, Depends, HTTPException, status, Query
 from sqlalchemy.orm import Session
 
-from app.core.database.connection import get_db
-from app.database.models import Sale as SaleModel, User as UserModel
-from app.api.v1.dependencies import get_current_active_user, require_operator
-from app.api.v1.schemas.common import PaginationParams, PaginatedResponse, SuccessResponse
+from backend.app.core.database.connection import get_db
+from backend.app.database.models import Sale as SaleModel, User as UserModel
+from backend.app.api.v1.dependencies import get_current_active_user, require_operator
+from backend.app.api.v1.schemas.common import PaginationParams, PaginatedResponse, SuccessResponse
 
 logger = logging.getLogger(__name__)
 

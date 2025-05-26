@@ -6,12 +6,12 @@ from datetime import datetime, timedelta
 from typing import List
 from decimal import Decimal
 
-from app.features.inventory.schemas import (
+from backend.app.features.inventory.schemas import (
     InventoryItem, InventoryItemCreate, InventoryItemUpdate,
     InventoryResponse, InventoryFilter, InventoryStatus,
     InventoryForecast, ForecastData
 )
-from app.shared.exceptions import NotFoundError, BusinessLogicError
+from backend.app.shared.exceptions import NotFoundError, BusinessLogicError
 
 
 class InventoryService:

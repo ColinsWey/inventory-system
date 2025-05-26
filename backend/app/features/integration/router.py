@@ -5,10 +5,10 @@
 from typing import Optional
 from fastapi import APIRouter, BackgroundTasks
 
-from app.features.integration.schemas import (
+from backend.app.features.integration.schemas import (
     SyncStatus, SyncResult, IntegrationConfig
 )
-from app.features.integration.service import IntegrationService
+from backend.app.features.integration.service import IntegrationService
 
 router = APIRouter()
 

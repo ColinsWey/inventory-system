@@ -6,10 +6,10 @@ from typing import Optional
 from datetime import datetime, date
 from fastapi import APIRouter, Query
 
-from app.features.analytics.schemas import (
+from backend.app.features.analytics.schemas import (
     AnalyticsReport, DashboardData, InventoryAnalytics
 )
-from app.features.analytics.service import AnalyticsService
+from backend.app.features.analytics.service import AnalyticsService
 
 router = APIRouter()
 

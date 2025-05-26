@@ -12,9 +12,9 @@ from pathlib import Path
 # Добавляем путь к приложению
 sys.path.append(str(Path(__file__).parent.parent))
 
-from app.api.v1.services.salesdrive_service import SalesDriveClient, SalesDriveService
-from app.api.v1.schemas.salesdrive import SalesDriveApiConfig
-from app.core.config import settings
+from backend.app.api.v1.services.salesdrive_service import SalesDriveClient, SalesDriveService
+from backend.app.api.v1.schemas.salesdrive import SalesDriveApiConfig
+from backend.app.core.config import settings
 
 
 async def test_connection():

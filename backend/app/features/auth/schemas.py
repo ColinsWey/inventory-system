@@ -3,7 +3,7 @@
 """
 
 from typing import Optional
-from pydantic import BaseModel, EmailStr
+from pydantic import BaseModel, EmailStr, ConfigDict
 
 
 class Token(BaseModel):
@@ -41,8 +41,7 @@ class UserResponse(UserBase):
     """Схема ответа с данными пользователя."""
     id: int
     
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)
 
 
 class UserInDB(UserBase):
@@ -50,5 +49,4 @@ class UserInDB(UserBase):
     id: int
     hashed_password: str
     
-    class Config:
-        from_attributes = True 
+    model_config = ConfigDict(from_attributes=True) 

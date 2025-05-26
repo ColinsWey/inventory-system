@@ -14,12 +14,12 @@ from sqlalchemy.orm import Session
 from fastapi import HTTPException, status
 from tenacity import retry, stop_after_attempt, wait_exponential, retry_if_exception_type
 
-from app.core.config import settings
-from app.api.v1.schemas.import_data import (
+from backend.app.core.config import settings
+from backend.app.api.v1.schemas.import_data import (
     SalesDriveProduct, SalesDriveConfig, ImportStatus, ImportResult,
     SyncStatus, ImportSource
 )
-from app.database.models import (
+from backend.app.database.models import (
     Product as ProductModel, Category as CategoryModel,
     Supplier as SupplierModel, SyncHistory as SyncHistoryModel
 )

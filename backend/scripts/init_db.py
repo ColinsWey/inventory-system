@@ -10,7 +10,7 @@ import logging
 # Добавляем путь к приложению
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from app.core.database.init_db import init_database
+from backend.app.core.database.init_db import init_database
 
 # Настройка логирования
 logging.basicConfig(

@@ -12,9 +12,9 @@ from passlib.context import CryptContext
 from sqlalchemy.orm import Session
 from fastapi import HTTPException, status
 
-from app.core.config import settings
-from app.database.models import User as UserModel
-from app.api.v1.schemas.auth import UserCreate, UserUpdate, LoginRequest, TokenResponse, UserInfo
+from backend.app.core.config import settings
+from backend.app.database.models import User as UserModel
+from backend.app.api.v1.schemas.auth import UserCreate, UserUpdate, LoginRequest, TokenResponse, UserInfo
 
 logger = logging.getLogger(__name__)
 

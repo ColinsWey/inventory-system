@@ -5,7 +5,7 @@
 from typing import Optional, List, Dict, Any
 from decimal import Decimal
 from uuid import UUID
-from pydantic import BaseModel, Field, validator
+from pydantic import BaseModel, Field, field_validator
 from enum import Enum
 
 from .common import UUIDMixin, TimestampMixin, FilterParams
@@ -79,7 +79,8 @@ class ProductBase(BaseModel):
     is_serialized: bool = Field(default=False, description="Серийный товар")
     warranty_months: int = Field(default=0, ge=0, description="Гарантия в месяцах")
 
-    @validator('unit_price', 'cost_price')
+    @field_validator('unit_price', 'cost_price')
+    @classmethod
     def validate_prices(cls, v):
         if v is not None and v < 0:
             raise ValueError('Цена не может быть отрицательной')

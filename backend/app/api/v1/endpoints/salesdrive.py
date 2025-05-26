@@ -10,16 +10,16 @@ from uuid import UUID
 from fastapi import APIRouter, Depends, HTTPException, status, BackgroundTasks
 from sqlalchemy.orm import Session
 
-from app.core.database.connection import get_db
-from app.api.v1.dependencies import get_current_user, require_manager
-from app.api.v1.schemas.auth import UserInfo
-from app.api.v1.schemas.common import SuccessResponse, ErrorResponse
-from app.api.v1.schemas.salesdrive import (
+from backend.app.core.database.connection import get_db
+from backend.app.api.v1.dependencies import get_current_user, require_manager
+from backend.app.api.v1.schemas.auth import UserInfo
+from backend.app.api.v1.schemas.common import SuccessResponse, ErrorResponse
+from backend.app.api.v1.schemas.salesdrive import (
     SalesDriveSyncRequest, SalesDriveSyncResult, SalesDriveConnectionTest,
     SalesDriveApiConfig, SalesDriveProductsResponse, SalesDriveOrdersResponse
 )
-from app.api.v1.schemas.import_data import ImportResult, ImportStatus
-from app.api.v1.services.salesdrive_service import SalesDriveService, SalesDriveAPIError
+from backend.app.api.v1.schemas.import_data import ImportResult, ImportStatus
+from backend.app.api.v1.services.salesdrive_service import SalesDriveService, SalesDriveAPIError
 
 logger = logging.getLogger(__name__)
 

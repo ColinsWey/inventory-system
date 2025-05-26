@@ -43,7 +43,7 @@ class FilterParams(BaseModel):
     """Базовые параметры фильтрации."""
     search: Optional[str] = Field(None, description="Поиск по тексту")
     sort_by: Optional[str] = Field("created_at", description="Поле для сортировки")
-    sort_order: Optional[str] = Field("desc", regex="^(asc|desc)$", description="Порядок сортировки")
+    sort_order: Optional[str] = Field("desc", pattern="^(asc|desc)$", description="Порядок сортировки")
 
 
 class SuccessResponse(BaseModel):

@@ -8,19 +8,19 @@ from uuid import UUID
 from fastapi import APIRouter, Depends, HTTPException, status, Query
 from sqlalchemy.orm import Session
 
-from app.core.database.connection import get_db
-from app.api.v1.services.product_service import ProductService
-from app.api.v1.schemas.product import (
+from backend.app.core.database.connection import get_db
+from backend.app.api.v1.services.product_service import ProductService
+from backend.app.api.v1.schemas.product import (
     Product, ProductCreate, ProductUpdate, ProductListItem, 
     ProductFilters, ProductBulkUpdate
 )
-from app.api.v1.schemas.common import (
+from backend.app.api.v1.schemas.common import (
     PaginationParams, PaginatedResponse, SuccessResponse
 )
-from app.api.v1.dependencies import (
+from backend.app.api.v1.dependencies import (
     get_current_active_user, require_operator, require_manager
 )
-from app.database.models import User as UserModel
+from backend.app.database.models import User as UserModel
 
 logger = logging.getLogger(__name__)
 
@@ -51,7 +51,7 @@ async def get_products(
     
     # Параметры сортировки
     sort_by: str = Query("created_at", description="Поле для сортировки"),
-    sort_order: str = Query("desc", regex="^(asc|desc)$", description="Порядок сортировки"),
+    sort_order: str = Query("desc", pattern="^(asc|desc)$", description="Порядок сортировки"),
     
     # Зависимости
     current_user: UserModel = Depends(get_current_active_user),

@@ -6,7 +6,7 @@ from datetime import datetime, date, timedelta
 from typing import List, Dict, Any, Optional
 from decimal import Decimal
 
-from app.features.analytics.schemas import (
+from backend.app.features.analytics.schemas import (
     DashboardData, InventoryAnalytics, AnalyticsReport,
     TrendData, InventoryAlert, AlertLevel
 )

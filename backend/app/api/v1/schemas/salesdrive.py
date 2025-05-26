@@ -6,7 +6,7 @@ from typing import Optional, List, Dict, Any
 from datetime import datetime
 from decimal import Decimal
 from uuid import UUID
-from pydantic import BaseModel, Field, validator
+from pydantic import BaseModel, Field, field_validator
 from enum import Enum
 
 from .common import UUIDMixin, TimestampMixin
@@ -286,13 +286,15 @@ class SalesDriveApiConfig(BaseModel):
     sync_interval_minutes: int = Field(default=60, description="Интервал синхронизации в минутах")
     webhook_secret: Optional[str] = Field(None, description="Секрет для webhook")
     
-    @validator('api_url')
+    @field_validator('api_url')
+    @classmethod
     def validate_api_url(cls, v):
         if not v.startswith(('http://', 'https://')):
             raise ValueError('API URL должен начинаться с http:// или https://')
         return v.rstrip('/')
     
-    @validator('api_key')
+    @field_validator('api_key')
+    @classmethod
     def validate_api_key(cls, v):
         if len(v) < 10:
             raise ValueError('API ключ слишком короткий')

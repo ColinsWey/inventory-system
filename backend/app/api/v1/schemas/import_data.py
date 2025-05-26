@@ -126,4 +126,57 @@ class SalesDriveProduct(BaseModel):
     cost: Optional[float] = Field(None, description="Себестоимость")
     quantity: int = Field(default=0, description="Количество")
     unit: str = Field(default="шт", description="Единица измерения")
-    updated_at: datetime = Field(description="Дата обновления в SalesDrive") 
+    updated_at: datetime = Field(description="Дата обновления в SalesDrive")
+
+
+class ProductImportData(BaseModel):
+    """Данные товара для импорта."""
+    name: str = Field(..., description="Название товара")
+    sku: str = Field(..., description="Артикул товара")
+    barcode: Optional[str] = Field(None, description="Штрихкод")
+    category_name: Optional[str] = Field(None, description="Название категории")
+    supplier_name: Optional[str] = Field(None, description="Название поставщика")
+    description: Optional[str] = Field(None, description="Описание")
+    unit_price: float = Field(..., ge=0, description="Цена за единицу")
+    cost_price: Optional[float] = Field(None, ge=0, description="Себестоимость")
+    quantity: int = Field(default=0, ge=0, description="Количество")
+    min_quantity: int = Field(default=0, ge=0, description="Минимальное количество")
+    unit: str = Field(default="шт", description="Единица измерения")
+    is_active: bool = Field(default=True, description="Активен ли товар")
+
+
+class CategoryImportData(BaseModel):
+    """Данные категории для импорта."""
+    name: str = Field(..., min_length=1, max_length=100, description="Название категории")
+    description: Optional[str] = Field(None, description="Описание категории")
+    parent_name: Optional[str] = Field(None, description="Название родительской категории")
+    is_active: bool = Field(default=True, description="Активна ли категория")
+
+
+class SupplierImportData(BaseModel):
+    """Данные поставщика для импорта."""
+    name: str = Field(..., min_length=1, max_length=100, description="Название поставщика")
+    contact_person: Optional[str] = Field(None, description="Контактное лицо")
+    email: Optional[str] = Field(None, description="Email")
+    phone: Optional[str] = Field(None, description="Телефон")
+    address: Optional[str] = Field(None, description="Адрес")
+    is_active: bool = Field(default=True, description="Активен ли поставщик")
+
+
+class ImportMapping(BaseModel):
+    """Маппинг полей при импорте."""
+    source_field: str = Field(..., description="Поле в источнике данных")
+    target_field: str = Field(..., description="Поле в системе")
+    transformation: Optional[str] = Field(None, description="Правило трансформации")
+    default_value: Optional[Any] = Field(None, description="Значение по умолчанию")
+    required: bool = Field(default=False, description="Обязательное поле")
+
+
+class ImportTemplate(UUIDMixin, TimestampMixin):
+    """Шаблон импорта."""
+    name: str = Field(..., min_length=1, max_length=100, description="Название шаблона")
+    description: Optional[str] = Field(None, description="Описание шаблона")
+    source: ImportSource = Field(..., description="Источник импорта")
+    mappings: List[ImportMapping] = Field(..., description="Маппинги полей")
+    settings: Dict[str, Any] = Field(default={}, description="Дополнительные настройки")
+    is_active: bool = Field(default=True, description="Активен ли шаблон") 

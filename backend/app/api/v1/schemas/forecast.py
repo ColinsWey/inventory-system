@@ -6,7 +6,7 @@ from typing import Optional, List, Dict, Any
 from datetime import date, datetime
 from decimal import Decimal
 from uuid import UUID
-from pydantic import BaseModel, Field, validator
+from pydantic import BaseModel, Field, field_validator
 
 from .common import UUIDMixin, TimestampMixin
 
@@ -16,9 +16,10 @@ class ForecastPeriod(BaseModel):
     start_date: date = Field(..., description="Дата начала периода")
     end_date: date = Field(..., description="Дата окончания периода")
     
-    @validator('end_date')
-    def validate_end_date(cls, v, values):
-        if 'start_date' in values and v <= values['start_date']:
+    @field_validator('end_date')
+    @classmethod
+    def validate_end_date(cls, v, info):
+        if info.data.get('start_date') and v <= info.data['start_date']:
             raise ValueError('Дата окончания должна быть больше даты начала')
         return v
 
@@ -32,7 +33,8 @@ class ForecastTemplateBase(BaseModel):
     trend_factor: Decimal = Field(default=Decimal("1.0000"), description="Коэффициент тренда")
     is_active: bool = Field(default=True, description="Активен ли шаблон")
 
-    @validator('seasonal_factors')
+    @field_validator('seasonal_factors')
+    @classmethod
     def validate_seasonal_factors(cls, v):
         # Проверяем, что есть коэффициенты для всех 12 месяцев
         required_months = {str(i) for i in range(1, 13)}
@@ -157,4 +159,43 @@ class ForecastFilters(BaseModel):
     date_from: Optional[date] = Field(None, description="Дата начала")
     date_to: Optional[date] = Field(None, description="Дата окончания")
     min_confidence: Optional[Decimal] = Field(None, ge=0, le=1, description="Минимальный уровень доверия")
-    has_actual: Optional[bool] = Field(None, description="Только с фактическими данными") 
+    has_actual: Optional[bool] = Field(None, description="Только с фактическими данными")
+
+
+class SeasonalFactors(BaseModel):
+    """Сезонные факторы."""
+    has_seasonality: bool = Field(description="Есть ли сезонность")
+    period_days: int = Field(description="Период сезонности в днях")
+    strength: float = Field(description="Сила сезонности")
+
+
+class TrendAnalysis(BaseModel):
+    """Анализ тренда."""
+    direction: str = Field(description="Направление тренда")
+    strength: float = Field(description="Сила тренда")
+    slope: float = Field(description="Наклон тренда")
+
+
+class DemandForecast(BaseModel):
+    """Прогноз спроса."""
+    product_id: UUID = Field(description="ID товара")
+    current_stock: int = Field(description="Текущий остаток")
+    predicted_demand: float = Field(description="Прогнозируемый спрос")
+    recommended_order: float = Field(description="Рекомендуемый заказ")
+    confidence_level: float = Field(description="Уровень доверия")
+    priority: str = Field(description="Приоритет")
+    forecast_period_days: int = Field(description="Период прогноза в днях")
+
+
+class ForecastResult(BaseModel):
+    """Результат прогнозирования."""
+    product_id: UUID = Field(description="ID товара")
+    forecast_period_days: int = Field(description="Период прогноза в днях")
+    predicted_demand: float = Field(description="Прогнозируемый спрос")
+    confidence_level: float = Field(description="Уровень доверия")
+    method_used: str = Field(description="Использованный метод")
+    seasonal_factors: Optional[SeasonalFactors] = Field(None, description="Сезонные факторы")
+    trend_analysis: TrendAnalysis = Field(description="Анализ тренда")
+    recommendations: List[str] = Field(description="Рекомендации")
+    forecast_data: List[Dict[str, Any]] = Field(description="Детальные данные прогноза")
+    forecast_id: Optional[UUID] = Field(None, description="ID созданного прогноза") 
