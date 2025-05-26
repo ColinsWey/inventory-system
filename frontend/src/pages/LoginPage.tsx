@@ -18,7 +18,7 @@ const loginSchema = yup.object({
   password: yup
     .string()
     .required('Пароль обязателен')
-    .min(6, 'Минимум 6 символов'),
+    .min(3, 'Минимум 3 символа'),
 });
 
 interface LoginFormData {
@@ -57,9 +57,12 @@ const LoginPage: React.FC = () => {
   }
 
   const onSubmit = async (data: LoginFormData) => {
+    console.log('🔍 Отправка формы:', data);
+    console.log('🔍 Ошибки валидации:', errors);
     try {
       await login(data.username, data.password);
     } catch (error) {
+      console.error('❌ Ошибка авторизации:', error);
       // Ошибка уже обработана в контексте
     }
   };
