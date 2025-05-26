@@ -41,6 +41,11 @@ services:
     container_name: inventory_backend
     environment:
       - DATABASE_URL=postgresql://postgres:postgres@db:5432/inventory_system
+      - DATABASE_HOST=db
+      - DATABASE_PORT=5432
+      - DATABASE_NAME=inventory_system
+      - DATABASE_USER=postgres
+      - DATABASE_PASSWORD=postgres
       - REDIS_URL=redis://redis:6379
       - DEBUG=true
       - LOG_LEVEL=INFO
