@@ -19,8 +19,8 @@ class Settings(BaseSettings):
     API_V1_STR: str = "/api/v1"
     
     # База данных
-    DATABASE_URL: str = "postgresql://postgres:postgres@db:5432/inventory_system"
-    DATABASE_HOST: str = "db"
+    DATABASE_URL: str = "postgresql://postgres:postgres@localhost:5432/inventory_system"
+    DATABASE_HOST: str = "localhost"
     DATABASE_PORT: int = 5432
     DATABASE_NAME: str = "inventory_system"
     DATABASE_USER: str = "postgres"
@@ -47,7 +47,7 @@ class Settings(BaseSettings):
     
     # SalesDrive API
     SALESDRIVE_API_URL: str = "https://api.salesdrive.ru"
-    SALESDRIVE_API_KEY: str = "2gXtjXXdqB8Ih9ALlHk3eGerWhY52Dz9b-JQ52vXqt0uFvdcWQRj2kTeROb3r42Nib_r0OLrKKGMAQads NobSajn_ZKWCxzpuzas"
+    SALESDRIVE_API_KEY: str = "test_api_key_placeholder"
     SALESDRIVE_TIMEOUT: int = 30
     SALESDRIVE_MAX_RETRIES: int = 3
     SALESDRIVE_RATE_LIMIT_DELAY: float = 1.0
