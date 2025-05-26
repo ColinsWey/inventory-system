@@ -9,7 +9,7 @@ import {
   CogIcon,
   ChartBarIcon,
   UsersIcon,
-  TrendingUpIcon
+  ArrowTrendingUpIcon
 } from '@heroicons/react/24/outline';
 import { cn } from '../../utils';
 import { useAuth } from '../../contexts/AuthContext';
@@ -25,7 +25,7 @@ const navigation: NavigationItem[] = [
   { name: 'Главная', href: '/', icon: HomeIcon },
   { name: 'Товары', href: '/products', icon: CubeIcon },
   { name: 'Категории', href: '/categories', icon: TagIcon },
-  { name: 'Прогнозирование', href: '/forecast', icon: TrendingUpIcon },
+  { name: 'Прогнозирование', href: '/forecast', icon: ArrowTrendingUpIcon },
   { name: 'Аналитика', href: '/analytics', icon: ChartBarIcon },
   { name: 'Пользователи', href: '/users', icon: UsersIcon },
   { name: 'Настройки', href: '/settings', icon: CogIcon },
