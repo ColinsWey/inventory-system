@@ -21,7 +21,7 @@ from app.api.v1.schemas.import_data import (
 )
 from app.database.models import (
     Product as ProductModel, Category as CategoryModel,
-    Supplier as SupplierModel, ImportLog as ImportLogModel
+    Supplier as SupplierModel, SyncHistory as SyncHistoryModel
 )
 
 logger = logging.getLogger(__name__)
@@ -386,10 +386,10 @@ class SalesDriveService:
         )
         
         # Создаем запись о синхронизации
-        import_log = ImportLogModel(
-            source=ImportSource.SALESDRIVE,
+        import_log = SyncHistoryModel(
+            sync_type="salesdrive_products",
             status=SyncStatus.RUNNING,
-            started_by=user_id,
+            created_by=user_id,
             started_at=start_time
         )
         self.db.add(import_log)
@@ -455,7 +455,11 @@ class SalesDriveService:
             # Обновляем статус синхронизации
             import_log.status = SyncStatus.SUCCESS
             import_log.completed_at = datetime.utcnow()
-            import_log.result = result.dict()
+            import_log.items_processed = result.processed_items
+            import_log.items_created = result.created_items
+            import_log.items_updated = result.updated_items
+            import_log.items_failed = result.failed_items
+            import_log.details = result.dict()
             
             logger.info(f"Products sync completed: {result.processed_items} processed, "
                        f"{result.created_items} created, {result.updated_items} updated, "

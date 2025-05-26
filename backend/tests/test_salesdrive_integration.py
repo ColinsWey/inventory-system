@@ -259,11 +259,11 @@ class TestSalesDriveService:
             )
         ]
         
-        # Мок модели ImportLog
+        # Мок модели SyncHistory
         mock_import_log = MagicMock()
         
         with patch.object(service, 'get_products', return_value=mock_products):
-            with patch('app.database.models.ImportLogModel', return_value=mock_import_log):
+            with patch('app.database.models.SyncHistoryModel', return_value=mock_import_log):
                 with patch.object(service, '_convert_salesdrive_product') as mock_convert:
                     mock_product = MagicMock()
                     mock_convert.return_value = mock_product
@@ -311,7 +311,7 @@ class TestSalesDriveService:
         mock_import_log = MagicMock()
         
         with patch.object(service, 'get_products', return_value=mock_products):
-            with patch('app.database.models.ImportLogModel', return_value=mock_import_log):
+            with patch('app.database.models.SyncHistoryModel', return_value=mock_import_log):
                 # Мок запроса к базе данных - товар существует
                 mock_db.query.return_value.filter.return_value.first.return_value = mock_existing_product
                 
@@ -336,7 +336,7 @@ class TestSalesDriveService:
         user_id = uuid4()
         
         with patch.object(service, 'get_products', side_effect=SalesDriveAPIError("API Error")):
-            with patch('app.database.models.ImportLogModel'):
+            with patch('app.database.models.SyncHistoryModel'):
                 with pytest.raises(SalesDriveAPIError):
                     await service.sync_products(user_id)
     

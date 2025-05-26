@@ -2,14 +2,32 @@
 Главный модуль FastAPI приложения для системы управления товарными остатками.
 """
 
+import logging
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.middleware.trustedhost import TrustedHostMiddleware
 
 from app.core.config import settings
 from app.api.v1.router import api_router
+from app.core.database.init_db import init_database
 # from app.api.middleware.logging import LoggingMiddleware
 # from app.api.middleware.error_handler import ErrorHandlerMiddleware
+
+# Настройка логирования
+logging.basicConfig(
+    level=getattr(logging, settings.LOG_LEVEL),
+    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
+)
+
+logger = logging.getLogger(__name__)
+
+# Инициализация базы данных при запуске
+try:
+    logger.info("Инициализация базы данных...")
+    init_database()
+    logger.info("База данных инициализирована успешно")
+except Exception as e:
+    logger.error(f"Ошибка инициализации базы данных: {e}")
 
 # Создание экземпляра приложения
 app = FastAPI(

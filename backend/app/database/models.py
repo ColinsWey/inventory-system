@@ -10,7 +10,7 @@ from typing import Optional, List
 from sqlalchemy import (
     Column, String, Integer, Boolean, DateTime, Text, 
     DECIMAL, ForeignKey, UniqueConstraint, Index,
-    Enum as SQLEnum, JSON, Date, INET
+    Enum as SQLEnum, JSON, Date
 )
 from sqlalchemy.dialects.postgresql import UUID, JSONB
 from sqlalchemy.ext.declarative import declarative_base
@@ -96,6 +96,7 @@ class User(Base, TimestampMixin):
     # Связи
     created_movements = relationship("InventoryMovement", back_populates="created_by_user")
     created_orders = relationship("Order", back_populates="created_by_user")
+    created_sales = relationship("Sale", back_populates="created_by_user")
     user_logs = relationship("UserLog", back_populates="user")
     resolved_alerts = relationship("Alert", back_populates="resolved_by_user")
 
@@ -191,6 +192,7 @@ class Product(Base, TimestampMixin):
     inventory_records = relationship("Inventory", back_populates="product")
     movements = relationship("InventoryMovement", back_populates="product")
     order_items = relationship("OrderItem", back_populates="product")
+    sales = relationship("Sale", back_populates="product")
     forecasts = relationship("SalesForecast", back_populates="product")
     alerts = relationship("Alert", back_populates="product")
     tags = relationship("ProductTag", secondary="product_tag_relations")
@@ -285,6 +287,7 @@ class Order(Base, TimestampMixin):
     # Связи
     created_by_user = relationship("User", back_populates="created_orders")
     items = relationship("OrderItem", back_populates="order")
+    sales = relationship("Sale", back_populates="order")
 
     def __repr__(self):
         return f"<Order(number='{self.order_number}', status='{self.status}')>"
@@ -331,6 +334,35 @@ class ForecastTemplate(Base, TimestampMixin):
         return f"<ForecastTemplate(name='{self.name}')>"
 
 
+class Sale(Base, TimestampMixin):
+    """Модель продажи."""
+    __tablename__ = "sales"
+
+    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
+    product_id = Column(UUID(as_uuid=True), ForeignKey("products.id"), nullable=False)
+    quantity = Column(Integer, nullable=False)
+    unit_price = Column(DECIMAL(12, 2), nullable=False)
+    total_amount = Column(DECIMAL(12, 2), nullable=False)
+    sale_date = Column(DateTime, default=func.current_timestamp())
+    customer_name = Column(String(255))
+    customer_email = Column(String(100))
+    order_id = Column(UUID(as_uuid=True), ForeignKey("orders.id"))
+    location = Column(String(100), default="Основной склад")
+    discount_amount = Column(DECIMAL(12, 2), default=0)
+    tax_amount = Column(DECIMAL(12, 2), default=0)
+    payment_method = Column(String(50))
+    notes = Column(Text)
+    created_by = Column(UUID(as_uuid=True), ForeignKey("users.id"))
+
+    # Связи
+    product = relationship("Product", back_populates="sales")
+    order = relationship("Order", back_populates="sales")
+    created_by_user = relationship("User", back_populates="created_sales")
+
+    def __repr__(self):
+        return f"<Sale(product_id='{self.product_id}', quantity={self.quantity}, amount={self.total_amount})>"
+
+
 class SalesForecast(Base):
     """Модель прогноза продаж."""
     __tablename__ = "sales_forecasts"
@@ -367,7 +399,7 @@ class UserLog(Base):
     entity_id = Column(UUID(as_uuid=True))
     old_values = Column(JSONB)
     new_values = Column(JSONB)
-    ip_address = Column(INET)
+    ip_address = Column(String(45))
     user_agent = Column(Text)
     created_at = Column(DateTime, default=func.current_timestamp())
 
@@ -437,10 +469,11 @@ class IntegrationConfig(Base, TimestampMixin):
         return f"<IntegrationConfig(service='{self.service_name}', enabled={self.is_enabled})>"
 
 
-# Индексы для оптимизации (дополнительные к тем, что в миграциях)
-Index('idx_products_name_search', Product.name.op('gin_trgm_ops'), postgresql_using='gin')
+# Индексы для оптимизации (совместимые с SQLAlchemy 2.0)
+Index('idx_products_name_search', Product.name)
 Index('idx_inventory_low_stock', Inventory.quantity, Inventory.min_quantity)
 Index('idx_movements_date_type', InventoryMovement.created_at, InventoryMovement.movement_type)
 Index('idx_orders_customer_date', Order.customer_email, Order.order_date)
+Index('idx_sales_date_product', Sale.sale_date, Sale.product_id)
 Index('idx_logs_user_date', UserLog.user_id, UserLog.created_at)
 Index('idx_alerts_unread', Alert.is_read, Alert.level) 

@@ -18,15 +18,15 @@ class Settings(BaseSettings):
     API_V1_STR: str = "/api/v1"
     
     # База данных
-    DATABASE_URL: str = "postgresql://postgres:postgres@localhost:5432/inventory_system"
-    DATABASE_HOST: str = "localhost"
+    DATABASE_URL: str = "postgresql://postgres:postgres@db:5432/inventory_system"
+    DATABASE_HOST: str = "db"
     DATABASE_PORT: int = 5432
     DATABASE_NAME: str = "inventory_system"
     DATABASE_USER: str = "postgres"
     DATABASE_PASSWORD: str = "postgres"
     
     # Redis
-    REDIS_URL: str = "redis://localhost:6379"
+    REDIS_URL: str = "redis://redis:6379"
     
     # JWT
     SECRET_KEY: str = "your_super_secret_jwt_key_here"

@@ -4,7 +4,10 @@
 
 from fastapi import APIRouter
 
-from app.api.v1.endpoints import auth, products, categories, salesdrive
+from app.api.v1.endpoints import auth, products, categories, salesdrive, sales, forecasts
+from app.features.analytics.router import router as analytics_router
+from app.features.inventory.router import router as inventory_router
+from app.features.integration.router import router as integration_router
 
 # Создаем главный роутер
 api_router = APIRouter()
@@ -29,20 +32,38 @@ api_router.include_router(
 )
 
 api_router.include_router(
+    sales.router,
+    prefix="/sales",
+    tags=["Продажи"]
+)
+
+api_router.include_router(
+    forecasts.router,
+    prefix="/forecasts",
+    tags=["Прогнозирование"]
+)
+
+api_router.include_router(
     salesdrive.router,
-    prefix="/integration",
+    prefix="/salesdrive",
     tags=["Интеграция с SalesDrive"]
 )
 
-# Добавим позже:
-# api_router.include_router(
-#     import_endpoints.router,
-#     prefix="/import",
-#     tags=["Импорт"]
-# )
+# Подключаем роутеры features
+api_router.include_router(
+    analytics_router,
+    prefix="/analytics",
+    tags=["Аналитика и отчеты"]
+)
 
-# api_router.include_router(
-#     forecast.router,
-#     prefix="/forecast",
-#     tags=["Прогнозирование"]
-# ) 
+api_router.include_router(
+    inventory_router,
+    prefix="/inventory",
+    tags=["Управление остатками"]
+)
+
+api_router.include_router(
+    integration_router,
+    prefix="/integration",
+    tags=["Интеграции"]
+) 
