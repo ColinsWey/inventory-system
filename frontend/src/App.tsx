@@ -14,6 +14,8 @@ import DashboardPage from './pages/DashboardPage';
 import ProductsPage from './pages/ProductsPage';
 import ProductDetailPage from './pages/ProductDetailPage';
 import CategoriesPage from './pages/CategoriesPage';
+import SalesPage from './pages/SalesPage';
+import AnalyticsPage from './pages/AnalyticsPage';
 import ImportPage from './pages/ImportPage';
 import LogsPage from './pages/LogsPage';
 import SettingsPage from './pages/SettingsPage';
@@ -63,6 +65,12 @@ function App() {
                 
                 {/* Категории */}
                 <Route path="categories" element={<CategoriesPage />} />
+                
+                {/* Продажи */}
+                <Route path="sales" element={<SalesPage />} />
+                
+                {/* Аналитика */}
+                <Route path="analytics" element={<AnalyticsPage />} />
                 
                 {/* Импорт */}
                 <Route path="import" element={<ImportPage />} />

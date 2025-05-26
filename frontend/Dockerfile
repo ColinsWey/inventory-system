@@ -1,4 +1,5 @@
-FROM node:18-alpine
+# Multi-stage build для оптимизации
+FROM node:18-alpine as build
 
 # Устанавливаем рабочую директорию
 WORKDIR /app
@@ -6,14 +7,26 @@ WORKDIR /app
 # Копируем package.json и package-lock.json
 COPY package*.json ./
 
-# Устанавливаем зависимости
-RUN npm ci --only=production
+# Устанавливаем зависимости (включая dev для сборки)
+RUN npm ci
 
 # Копируем исходный код
 COPY . .
 
-# Открываем порт
-EXPOSE 3000
+# Собираем приложение для production
+RUN npm run build
 
-# Команда запуска в режиме разработки
-CMD ["npm", "start"] 
+# Production stage
+FROM nginx:alpine
+
+# Копируем собранное приложение
+COPY --from=build /app/build /usr/share/nginx/html
+
+# Копируем конфигурацию nginx
+COPY nginx.conf /etc/nginx/conf.d/default.conf
+
+# Открываем порт
+EXPOSE 80
+
+# Команда запуска nginx
+CMD ["nginx", "-g", "daemon off;"] 
