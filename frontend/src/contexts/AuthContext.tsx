@@ -30,14 +30,18 @@ const initialState: AuthState = {
 };
 
 const authReducer = (state: AuthState, action: AuthAction): AuthState => {
+  console.log('🔄 AuthContext reducer:', action.type, action);
+  
   switch (action.type) {
     case 'AUTH_START':
+      console.log('🔄 AUTH_START - начинаем авторизацию');
       return {
         ...state,
         isLoading: true,
         error: null,
       };
     case 'AUTH_SUCCESS':
+      console.log('✅ AUTH_SUCCESS - авторизация успешна, пользователь:', action.payload);
       return {
         ...state,
         user: action.payload,
@@ -46,6 +50,7 @@ const authReducer = (state: AuthState, action: AuthAction): AuthState => {
         error: null,
       };
     case 'AUTH_FAILURE':
+      console.log('❌ AUTH_FAILURE - ошибка авторизации:', action.payload);
       return {
         ...state,
         user: null,
@@ -54,6 +59,7 @@ const authReducer = (state: AuthState, action: AuthAction): AuthState => {
         error: action.payload,
       };
     case 'AUTH_LOGOUT':
+      console.log('🚪 AUTH_LOGOUT - выход из системы');
       return {
         ...state,
         user: null,
@@ -62,6 +68,7 @@ const authReducer = (state: AuthState, action: AuthAction): AuthState => {
         error: null,
       };
     case 'CLEAR_ERROR':
+      console.log('🧹 CLEAR_ERROR - очистка ошибки');
       return {
         ...state,
         error: null,
@@ -103,12 +110,17 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   }, []);
 
   const login = async (username: string, password: string): Promise<void> => {
+    console.log('🔐 AuthContext.login() вызван с:', { username, password: '***' });
     try {
       dispatch({ type: 'AUTH_START' });
+      console.log('📤 Вызываем authService.login()');
       await authService.login({ username, password });
+      console.log('📤 Вызываем authService.getCurrentUser()');
       const user = await authService.getCurrentUser();
       dispatch({ type: 'AUTH_SUCCESS', payload: user });
+      console.log('✅ AuthContext.login() завершен успешно');
     } catch (error: any) {
+      console.log('❌ AuthContext.login() ошибка:', error);
       dispatch({ 
         type: 'AUTH_FAILURE', 
         payload: error.detail || 'Ошибка авторизации' 

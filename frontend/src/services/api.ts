@@ -35,32 +35,16 @@ api.interceptors.response.use(
   async (error: AxiosError) => {
     const originalRequest = error.config as any;
 
-    // Если ошибка 401 и это не запрос на обновление токена
+    // Если ошибка 401 - перенаправляем на логин (refresh_token может отсутствовать)
     if (error.response?.status === 401 && !originalRequest._retry) {
       originalRequest._retry = true;
-
-      try {
-        const refreshToken = localStorage.getItem('refresh_token');
-        if (refreshToken) {
-          const response = await axios.post(`${API_BASE_URL}/auth/refresh`, {
-            refresh_token: refreshToken,
-          });
-
-          const tokens: AuthTokens = response.data;
-          localStorage.setItem('access_token', tokens.access_token);
-          localStorage.setItem('refresh_token', tokens.refresh_token);
-
-          // Повторяем оригинальный запрос с новым токеном
-          originalRequest.headers.Authorization = `Bearer ${tokens.access_token}`;
-          return api(originalRequest);
-        }
-      } catch (refreshError) {
-        // Если обновление токена не удалось, перенаправляем на логин
-        localStorage.removeItem('access_token');
-        localStorage.removeItem('refresh_token');
-        window.location.href = '/login';
-        return Promise.reject(refreshError);
-      }
+      console.log('❌ 401 ошибка - токен недействителен, перенаправляем на логин');
+      
+      // Очищаем токены и перенаправляем на логин
+      localStorage.removeItem('access_token');
+      localStorage.removeItem('refresh_token');
+      window.location.href = '/login';
+      return Promise.reject(error);
     }
 
     // Обработка других ошибок
