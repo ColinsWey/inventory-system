@@ -20,7 +20,7 @@ class UserRole(str, Enum):
 class LoginRequest(BaseModel):
     """Запрос на авторизацию."""
     username: str = Field(..., min_length=3, max_length=50, description="Имя пользователя")
-    password: str = Field(..., min_length=6, description="Пароль")
+    password: str = Field(..., min_length=3, description="Пароль")
 
 
 class TokenResponse(BaseModel):
@@ -46,7 +46,7 @@ class UserCreate(BaseModel):
     """Создание пользователя."""
     username: str = Field(..., min_length=3, max_length=50, description="Имя пользователя")
     email: EmailStr = Field(description="Email")
-    password: str = Field(..., min_length=6, description="Пароль")
+    password: str = Field(..., min_length=3, description="Пароль")
     first_name: Optional[str] = Field(None, max_length=100, description="Имя")
     last_name: Optional[str] = Field(None, max_length=100, description="Фамилия")
     role: UserRole = Field(default=UserRole.VIEWER, description="Роль пользователя")
@@ -64,7 +64,7 @@ class UserUpdate(BaseModel):
 class PasswordChange(BaseModel):
     """Смена пароля."""
     current_password: str = Field(..., description="Текущий пароль")
-    new_password: str = Field(..., min_length=6, description="Новый пароль")
+    new_password: str = Field(..., min_length=3, description="Новый пароль")
 
 
 class User(UUIDMixin, TimestampMixin, UserInfo):
